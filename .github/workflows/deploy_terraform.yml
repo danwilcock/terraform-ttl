@@ -59,6 +59,7 @@ jobs:
   Terraform_Plan:
     needs: ["Terraform_Init"]
     runs-on: ubuntu-latest
+    if: github.event.inputs.destroy == 'false'
     steps:
       - uses: actions/download-artifact@v3
         with:
@@ -66,13 +67,13 @@ jobs:
           path: ./terraform
       - name: Plan
         id: plan
-        if: github.event.inputs.destroy == 'false'
         working-directory: ./terraform
         run: | 
           terraform plan  
   Terraform_Apply:
     needs: ["Terraform_Init","Terraform_Plan"]
     runs-on: ubuntu-latest
+    if: github.event.inputs.destroy == 'false'
     steps:
       - uses: actions/download-artifact@v3
         with:
@@ -80,13 +81,13 @@ jobs:
           path: ./terraform
       - name: Apply
         id: apply
-        if: github.event.inputs.destroy == 'false'
         working-directory: ./terraform
         run: | 
           terraform apply -auto-approve 
   Terraform_Destroy_Plan:
     needs: Terraform_Init
     runs-on: ubuntu-latest
+    if: github.event.inputs.destroy == 'true'
     steps:
       - uses: actions/download-artifact@v3
         with:
@@ -94,13 +95,13 @@ jobs:
           path: ./terraform
       - name: Destroy Plan
         id: destroy_plan
-        if: github.event.inputs.destroy == 'true'
         working-directory: ./terraform
         run: | 
           terraform apply -auto-approve --destroy 
   Terraform_Destroy:
     needs: ["Terraform_Init","Terraform_Destroy_Plan"]
     runs-on: ubuntu-latest
+    if: github.event.inputs.destroy == 'true'
     steps:
       - uses: actions/download-artifact@v3
         with:
@@ -108,7 +109,6 @@ jobs:
           path: ./terraform
       - name: Destroy 
         id: destroy
-        if: github.event.inputs.destroy == 'true'
         working-directory: ./terraform
         run: | 
           terraform apply -auto-approve --destroy 
