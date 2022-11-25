@@ -68,6 +68,10 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.inputs.destroy == 'false'
     steps:
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.2.8
       - uses: actions/download-artifact@v3
         with:
           name: initialised_terraform
