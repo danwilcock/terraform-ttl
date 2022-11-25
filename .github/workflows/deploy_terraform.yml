@@ -3,9 +3,17 @@ name: Build + Release
 on: 
   workflow_dispatch:
     inputs:
-      expiry: 
-        type: string
+      expiry:
+        type: boolean
         description: Expire environment
+      expiry_date:
+        type: string
+        description: Date of the destroy
+        default: "yyyy-mm-ddThh:mm:ss"
+      destroy:
+        type: boolean
+        description: Destroy the environment
+        default: false
   # push:
   #   branches:
   #     - main
@@ -54,6 +62,18 @@ jobs:
         working-directory: ./terraform
         run: | 
           terraform apply -auto-approve 
+      - name: Destroy Plan
+        id: destroy
+        if: github.event.inputs.expiry
+        working-directory: ./terraform
+        run: | 
+          terraform apply -auto-approve --destroy 
+      - name: Destroy 
+        id: destroy
+        if: github.event.inputs.expiry
+        working-directory: ./terraform
+        run: | 
+          terraform apply -auto-approve --destroy 
       
       
 
