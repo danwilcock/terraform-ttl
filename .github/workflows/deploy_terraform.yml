@@ -14,9 +14,9 @@ on:
         type: boolean
         description: Destroy the environment
         default: false
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
 
 jobs:
   Terraform_Init:
@@ -56,6 +56,13 @@ jobs:
         with:
           name: initialised_terraform
           path: ./terraform
+      - name: bash
+        run: |
+          ls -a
+      - name: bash
+        working-directory: ./terraform
+        run: |
+          ls -a
   Terraform_Plan:
     needs: ["Terraform_Init"]
     runs-on: ubuntu-latest
