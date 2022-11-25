@@ -54,11 +54,13 @@ jobs:
             -backend-config="key=expiry.terraform.tfstate" 
       - name: Plan
         id: plan
+        if: github.event.inputs.destroy == false
         working-directory: ./terraform
         run: | 
           terraform plan  
       - name: Apply
         id: apply
+        if: github.event.inputs.destroy == false
         working-directory: ./terraform
         run: | 
           terraform apply -auto-approve 
