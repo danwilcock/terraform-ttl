@@ -63,7 +63,7 @@ jobs:
         run: | 
           terraform apply -auto-approve 
       - name: Destroy Plan
-        id: destroy
+        id: destroy_plan
         if: github.event.inputs.destroy
         working-directory: ./terraform
         run: | 
