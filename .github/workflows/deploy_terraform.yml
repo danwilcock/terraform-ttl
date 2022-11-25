@@ -3,12 +3,12 @@ name: Build + Release
 on: 
   workflow_dispatch:
     inputs:
-      name:
-        type: boolean
+      expiry: 
+        type: string
         description: Expire environment
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
 
 jobs:
   Terraform_Plan:
