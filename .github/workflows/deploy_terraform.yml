@@ -33,6 +33,7 @@ jobs:
       
       - name: Init
         id: init
+        working-directory: ./terraform
         run: | 
           terraform init \
             -backend-config="access_key=${{steps.sa_states.outputs.gh-actions-storage-account-key}}" \
@@ -41,10 +42,12 @@ jobs:
             -backend-config="key=expiry.terraform.tfstate" 
       - name: Plan
         id: plan
+        working-directory: ./terraform
         run: | 
           terraform plan  
       - name: Apply
         id: apply
+        working-directory: ./terraform
         run: | 
           terraform apply -auto-approve 
       
