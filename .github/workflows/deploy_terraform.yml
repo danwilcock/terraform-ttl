@@ -52,37 +52,21 @@ jobs:
             -backend-config="storage_account_name=ghactionsstates" \
             -backend-config="container_name=tfstates" \
             -backend-config="key=expiry.terraform.tfstate" 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: initialised_terraform
-          path: ./terraform
-      - name: bash
-        run: |
-          ls -a
-      - name: bash
-        working-directory: ./terraform
-        run: |
-          ls -a
+      
   Terraform_Plan:
     needs: ["Terraform_Init"]
     runs-on: ubuntu-latest
     if: github.event.inputs.destroy == 'false'
     steps:
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.2.8
-      - uses: actions/download-artifact@v3
-        with:
-          name: initialised_terraform
-          path: ./terraform
-      - name: bash
-        run: |
-          ls -a
-      - name: bash
+      - name: Init
+        id: init
         working-directory: ./terraform
-        run: |
-          ls -a
+        run: | 
+          terraform init \
+            -backend-config="access_key=${{steps.sa_states.outputs.gh-actions-storage-account-key}}" \
+            -backend-config="storage_account_name=ghactionsstates" \
+            -backend-config="container_name=tfstates" \
+            -backend-config="key=expiry.terraform.tfstate" 
       - name: Plan
         id: plan
         working-directory: ./terraform
@@ -93,10 +77,15 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.inputs.destroy == 'false'
     steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: initialised_terraform
-          path: ./terraform
+      - name: Init
+        id: init
+        working-directory: ./terraform
+        run: | 
+          terraform init \
+            -backend-config="access_key=${{steps.sa_states.outputs.gh-actions-storage-account-key}}" \
+            -backend-config="storage_account_name=ghactionsstates" \
+            -backend-config="container_name=tfstates" \
+            -backend-config="key=expiry.terraform.tfstate" 
       - name: Apply
         id: apply
         working-directory: ./terraform
