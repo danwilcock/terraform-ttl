@@ -64,13 +64,13 @@ jobs:
           terraform apply -auto-approve 
       - name: Destroy Plan
         id: destroy
-        if: github.event.inputs.expiry
+        if: github.event.inputs.destroy
         working-directory: ./terraform
         run: | 
           terraform apply -auto-approve --destroy 
       - name: Destroy 
         id: destroy
-        if: github.event.inputs.expiry
+        if: github.event.inputs.destroy
         working-directory: ./terraform
         run: | 
           terraform apply -auto-approve --destroy 
