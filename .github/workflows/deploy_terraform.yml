@@ -2,6 +2,10 @@ name: Build + Release
 
 on: 
   workflow_dispatch:
+    inputs:
+      name:
+        type: boolean
+        description: Expire environment
   push:
     branches:
       - main
