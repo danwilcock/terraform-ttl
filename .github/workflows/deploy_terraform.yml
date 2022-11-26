@@ -63,11 +63,12 @@ jobs:
         id: plan
         working-directory: ./terraform
         run: | 
-          terraform plan \
-            -backend-config="access_key=${{needs.Terraform_Init.outputs.gh-actions-storage-account-key}}" \
-            -backend-config="storage_account_name=ghactionsstates" \
-            -backend-config="container_name=tfstates" \
-            -backend-config="key=expiry.terraform.tfstate" 
+          terraform plan 
+          # \
+          #   -backend-config="access_key=${{needs.Terraform_Init.outputs.gh-actions-storage-account-key}}" \
+          #   -backend-config="storage_account_name=ghactionsstates" \
+          #   -backend-config="container_name=tfstates" \
+          #   -backend-config="key=expiry.terraform.tfstate" 
   Terraform_Apply:
     needs: ["Terraform_Init","Terraform_Plan"]
     runs-on: ubuntu-latest
@@ -85,11 +86,12 @@ jobs:
         id: apply
         working-directory: ./terraform
         run: | 
-          terraform apply -auto-approve \
-            -backend-config="access_key=${{needs.Terraform_Init.outputs.gh-actions-storage-account-key}}" \
-            -backend-config="storage_account_name=ghactionsstates" \
-            -backend-config="container_name=tfstates" \
-            -backend-config="key=expiry.terraform.tfstate" 
+          terraform apply -auto-approve 
+          # \
+          #   -backend-config="access_key=${{needs.Terraform_Init.outputs.gh-actions-storage-account-key}}" \
+          #   -backend-config="storage_account_name=ghactionsstates" \
+          #   -backend-config="container_name=tfstates" \
+          #   -backend-config="key=expiry.terraform.tfstate" 
   Terraform_Destroy_Plan:
     needs: Terraform_Init
     runs-on: ubuntu-latest
